@@ -1,3 +1,8 @@
+"""
+Author: Miles Catlett
+Date: 12/1/22
+This function gets the events from the foothills tasting room website.
+"""
 from bs4 import BeautifulSoup
 import requests
 from datetime import datetime
@@ -5,6 +10,10 @@ import db
 
 
 def fht():
+    """
+    This function uses beautiful soup 4 to get the data from the foothills website.
+    :return: List of tuples for mysql database
+    """
     fht = []
     eid = int(db.get_eid())
     urls = [
@@ -26,6 +35,7 @@ def fht():
                 location = event.find("span", attrs={"class": "tastingRoom eventLabel"}).contents[0].strip()
                 if location == 'Tasting':
                     location = 'Tasting Room - Foothills Brewing'
+                # Format event dates and times for database
                 event_date = event.find("span", attrs={"class": "date"}).contents[0].strip()
                 event_time = event.find("span", attrs={"class": "time"}).contents[0].strip()
                 times = event_time.split(' - ')
